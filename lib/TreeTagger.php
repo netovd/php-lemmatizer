@@ -164,7 +164,7 @@ class TreeTagger
    */
   protected function buildCommand(string $value): string
   {
-    return sprintf("/bin/echo \"%s\" | %s -f -a %s | %s -token -lemma -sgml %s",
+    return sprintf("echo \"%s\" | %s -f -a %s | %s -token -lemma -sgml %s",
       $value,
       $this->tokenizePerlCmdPath,
       $this->abbreviationsPath,
@@ -179,10 +179,10 @@ class TreeTagger
    * @return array
    * @throws \Exception
    */
-  public function lemmatizer($data, ?\Closure $functionGenerateProcess = null): array
+  public function lemmatizer($data): array
   {
     $data = $this->toArray($data);
-    return $this->executeProcess($data, $functionGenerateProcess);
+    return $this->executeProcess($data);
   }
 
   /**
@@ -191,7 +191,7 @@ class TreeTagger
    * @return array
    * @throws \Exception
    */
-  protected function executeProcess($data, ?\Closure $functionGenerateProcess = null): array
+  protected function executeProcess($data): array
   {
     $finaleArray = array();
     $processRun = array();
@@ -213,16 +213,10 @@ class TreeTagger
         $value = $data[$keyArray];
         unset($data[$keyArray]);
         $commandText = $this->buildCommand($value);
-        if(!$functionGenerateProcess) {
-          $functionGenerateProcess = new Process([$commandText]);
-        }
-        else {
-          $process = $functionGenerateProcess->call($this, $commandText);
-        }
         $process = array(
           "key"               =>  $keyArray,
           "value"             =>  $value,
-          "commande"          =>  $process,
+          "commande"          =>  Process::fromShellCommandline($commandText),
           "commandeTexte"     =>  $commandText,
           "numProcess"        =>  $numProcess
         );
@@ -309,7 +303,7 @@ class TreeTagger
             $value = $usedSource ? strtolower($source) : $dest;
             $value = $this->removeAccent ? $this->removeAccents($value) : $value;
             $finalArray[$this->uniqueWord ? $value : $key] = $value;
-            $detailArray[$this->uniqueWord ? $value : $key] = array(
+            $detailArray[$key] = array(
               "source"    =>  $source,
               "type"      =>  $type,
               "dest"      =>  $dest
