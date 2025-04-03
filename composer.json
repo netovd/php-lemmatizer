@@ -1,13 +1,13 @@
 {
-    "name":                             "mbeurel/php-lemmatizer",
+    "name":                             "netovd/php-lemmatizer",
     "type":                             "library",
-    "description":                      "PHP Wrapper for the TreeTagger library",
+    "description":                      "fork of mbeurel/php-lemmatizer",
     "keywords":                         [
         "TreeTagger",
         "PHP",
         "lemmatizer"
     ],
-    "homepage":                         "https://github.com/mbeurel/php-lemmatizer",
+    "homepage":                         "https://github.com/netod/php-lemmatizer",
     "license":                          "MIT",
     "authors": [
         {
@@ -18,12 +18,12 @@
     ],
     "require": {
         "ext-json":                     "*",
-        "php":                          "^7.4 | ^8.0",
-        "symfony/process":              "^5.4"
+        "php":                          "=>7.4",
+        "symfony/process":              ">=5.4"
     },
     "require-dev": {
-        "symfony/var-dumper":           "^5.4",
-        "symfony/debug-bundle":         "^5.4"
+        "symfony/var-dumper":           ">=5.4",
+        "symfony/debug-bundle":         ">=5.4"
     },
     "autoload": {
         "psr-4": { "PhpTreeTagger\\": "lib" }
